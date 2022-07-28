@@ -27,9 +27,9 @@ public class S3Service implements FileService{
         // Upload file to AWS S3
 
         // Prepare a Key
-        var filenameExtension = StringUtils.getFilenameExtension(file.getOriginalFilename());
+        String filenameExtension = StringUtils.getFilenameExtension(file.getOriginalFilename());
 
-        var key = UUID.randomUUID().toString() + "." + filenameExtension;
+        var key = String.format("%s.%s",UUID.randomUUID(), filenameExtension);
 
         var metadata = new ObjectMetadata();
         metadata.setContentLength(file.getSize());

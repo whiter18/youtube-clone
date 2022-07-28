@@ -15,6 +15,7 @@ export class VideoDetailComponent implements OnInit {
   videoDescription!: string;
   tags: Array<string> = [];
   videoAvailable: boolean = false;
+  comment: Array<string> = [];
 
   constructor(private activatedRoute: ActivatedRoute,
               private videoService: VideoService) {
@@ -24,6 +25,7 @@ export class VideoDetailComponent implements OnInit {
       this.videoTitle = data.title;
       this.videoDescription = data.description;
       this.tags = data.tags;
+
       this.videoAvailable = true;
     })
   }

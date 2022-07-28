@@ -1,6 +1,10 @@
 package com.goorm.t4.youtubeclone.service;
 
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.goorm.t4.youtubeclone.dto.UserInfoDto;
+import com.goorm.t4.youtubeclone.model.User;
 import com.goorm.t4.youtubeclone.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,6 +35,21 @@ public class UserRegistrationService {
                 .build();
         try {
             HttpResponse<String> responseString = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            String body = responseString.body();
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
+            UserInfoDto userInfoDto = objectMapper.readValue(body, UserInfoDto.class);
+
+            User user = new User();
+            user.setGivenName(userInfoDto.getGivenName());
+            user.setNickname(userInfoDto.getNickname());
+            user.setEmailAddress(userInfoDto.getEmail());
+            user.setSub(userInfoDto.getSub());
+
+            userRepository.save(user);
+
+
         } catch (Exception exception){
             throw new RuntimeException("Exception occurred while registering user", exception);
         }

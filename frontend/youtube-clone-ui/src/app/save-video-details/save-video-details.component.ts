@@ -29,6 +29,7 @@ export class SaveVideoDetailsComponent {
   fileSelected = false;
   videoUrl!: string;
   thumbnailUrl!: string;
+  viewCount!: number;
 
   constructor(private activatedRoute: ActivatedRoute, private videoService: VideoService,
               private matSnackBar: MatSnackBar) {
@@ -64,17 +65,16 @@ export class SaveVideoDetailsComponent {
     }
   }
 
-  onFileSelected($event: Event) {
+  onFileSelected(event: Event) {
     // @ts-ignore
-    this.selectedFile = $event.target.files[0];
+    this.selectedFile = event.target.files[0];
     this.selectedFileName = this.selectedFile.name;
     this.fileSelected = true;
   }
 
   onUpload() {
     this.videoService.uploadThumbnail(this.selectedFile, this.videoId)
-      .subscribe(data => {
-        console.log(data);
+      .subscribe(() => {
         // show an upload success notification
         this.matSnackBar.open("Thumbnail Upload Successful","OK");
       })
@@ -89,7 +89,8 @@ export class SaveVideoDetailsComponent {
       "tags": this.tags,
       "videoStatus": this.saveVideoDetailsForm.get('videoStatus')?.value,
       "videoUrl": this.videoUrl,
-      "thumbnailUrl": this.thumbnailUrl
+      "thumbnailUrl": this.thumbnailUrl,
+      "viewCount": this.viewCount
     }
     this.videoService.saveVideo(videoMetaData).subscribe(data => {
       this.matSnackBar.open("Video Metadata Updated successfully", "OK");

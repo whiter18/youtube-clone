@@ -41,4 +41,8 @@ export class VideoService {
     console.log(videoMetaData);
     return this.httpClient.put<VideoDto>("http://localhost:8080/api/videos/", videoMetaData);
   }
+
+  getAllVideos(): Observable<Array<VideoDto>> {
+    return this.httpClient.get<Array<VideoDto>>("http://localhost:8080/api/videos");
+  }
 }
